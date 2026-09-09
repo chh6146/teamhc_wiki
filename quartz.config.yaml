@@ -1,45 +1,46 @@
 # yaml-language-server: $schema=./quartz/plugins/quartz-plugins.schema.json
 configuration:
-  pageTitle: Quartz 5
+  pageTitle: 세계선 기록보관소
   pageTitleSuffix: ""
   enableSPA: true
   enablePopovers: true
   analytics:
     provider: plausible
-  locale: en-US
+  locale: ko-KR
   baseUrl: wiki.teamhc.net
   ignorePatterns:
     - private
     - templates
     - .obsidian
+    - "**/시나리오"
   theme:
     fontOrigin: googleFonts
     cdnCaching: true
     typography:
-      header: Schibsted Grotesk
-      body: Source Sans Pro
+      header: Noto Sans KR
+      body: Noto Sans KR
       code: IBM Plex Mono
     colors:
       lightMode:
-        light: "#faf8f8"
-        lightgray: "#e5e5e5"
-        gray: "#b8b8b8"
-        darkgray: "#4e4e4e"
-        dark: "#2b2b2b"
-        secondary: "#284b63"
-        tertiary: "#84a59d"
-        highlight: rgba(143, 159, 169, 0.15)
-        textHighlight: "#fff23688"
+        light: "#f4f7f9"        # 은은한 쿨톤 화이트 (배경)
+        lightgray: "#e1e8ed"    # 부드러운 하이라이트 경계선
+        gray: "#94a3b8"         # 텍스트 보조/아이콘
+        darkgray: "#334155"      # 본문 텍스트 (높은 가독성)
+        dark: "#0f172a"          # 헤더/강조 텍스트
+        secondary: "#4776e6"    # [수정] 톤다운된 차분한 뮤트 코발트 블루
+        tertiary: "#64b5f6"     # [수정] 자극을 줄인 파스텔 스카이 블루
+        highlight: "rgba(71, 118, 230, 0.08)" # [수정] 영역 하이라이트 연화
+        textHighlight: "#64b5f633"           # [수정] 텍스트 형광펜 투명도 조정
       darkMode:
-        light: "#161618"
-        lightgray: "#393639"
-        gray: "#646464"
-        darkgray: "#d4d4d4"
-        dark: "#ebebec"
-        secondary: "#7b97aa"
-        tertiary: "#84a59d"
-        highlight: rgba(143, 159, 169, 0.15)
-        textHighlight: "#b3aa0288"
+        light: "#0b1329"        # 미드나잇 딥 블루 (배경)
+        lightgray: "#1e293b"    # 카드/부모 요소 배경
+        gray: "#64748b"         # 보조 비활성 요소
+        darkgray: "#cbd5e1"      # 본문 텍스트
+        dark: "#f8fafc"          # 헤더/강조 텍스트
+        secondary: "#5c93e6"    # [수정] 눈부심을 줄인 차분한 야간 블루
+        tertiary: "#80c4e9"     # [수정] 부드러운 소프트 스카이
+        highlight: "rgba(92, 147, 230, 0.12)" # [수정] 야간 영역 하이라이트 연화
+        textHighlight: "#5c93e633"           # [수정] 야간 텍스트 형광펜 연화
 plugins:
   - source: "@quartz-community/created-modified-date"
     enabled: true
@@ -61,17 +62,7 @@ plugins:
   - source: "@quartz-community/obsidian-flavored-markdown"
     enabled: true
     options:
-      comments: true
-      highlight: true
-      wikilinks: true
-      callouts: true
-      mermaid: true
-      parseTags: true
-      parseArrows: true
-      parseBlockReferences: true
       enableInHtmlEmbed: false
-      enableYouTubeEmbed: true
-      enableVideoEmbed: true
       enableCheckbox: true
     order: 30
   - source: "@quartz-community/github-flavored-markdown"
@@ -100,7 +91,7 @@ plugins:
     enabled: false
     order: 85
   - source: "@quartz-community/hard-line-breaks"
-    enabled: true
+    enabled: false
     order: 90
   - source: "@quartz-community/ox-hugo"
     enabled: false
@@ -111,31 +102,14 @@ plugins:
   - source: "@quartz-community/quartz-fonts"
     enabled: true
   - source: "@quartz-themes/core"
-    enabled: true
+    enabled: false
     options:
-      theme: default
+      theme: tokyo-night
       mode: both
   - source: "@quartz-community/remove-draft"
     enabled: true
   - source: "@quartz-community/explicit-publish"
     enabled: false
-  - source: "@quartz-community/unlisted-pages"
-    enabled: true
-    options: {}
-    order: 45
-  - source: "@quartz-community/encrypted-pages"
-    enabled: true
-    options:
-      iterations: 600000
-      passwordField: password
-      unlistWhenEncrypted: false
-      outputPath: static/encryptedContentIndex.json
-  - source: "@quartz-community/stacked-pages"
-    enabled: false
-    layout:
-      position: afterBody
-      priority: 50
-      display: all
   - source: "@quartz-community/alias-redirects"
     enabled: true
   - source: "@quartz-community/content-index"
@@ -159,11 +133,15 @@ plugins:
     enabled: true
   - source: "@quartz-community/explorer"
     enabled: true
+    options:
+      folderClickBehavior: collapse # "link" to navigate or "collapse" to toggle
+      folderDefaultState: open # "collapsed" or "open"
+      useSavedState: true
     layout:
       position: left
       priority: 50
   - source: "@quartz-community/graph"
-    enabled: true
+    enabled: false
     layout:
       position: right
       priority: 10
@@ -186,7 +164,7 @@ plugins:
       position: beforeBody
       priority: 10
   - source: "@quartz-community/content-meta"
-    enabled: true
+    enabled: false
     layout:
       position: beforeBody
       priority: 20
@@ -207,7 +185,7 @@ plugins:
       priority: 30
       group: toolbar
   - source: "@quartz-community/reader-mode"
-    enabled: true
+    enabled: false
     layout:
       position: left
       priority: 35
@@ -266,13 +244,24 @@ plugins:
       position: beforeBody
       priority: 15
       display: all
-  - source: "@quartz-community/obsidian-plugin-excalidraw"
+  - source: "@quartz-community/unlisted-pages"
+    enabled: true
+    options: {}
+    order: 45
+  - source: "@quartz-community/encrypted-pages"
     enabled: true
     options:
-      enableInteraction: true
-      darkMode: auto
-      exportPadding: 20
-    order: 50
+      iterations: 600000
+      passwordField: password
+      unlistWhenEncrypted: false
+      outputPath: static/encryptedContentIndex.json
+    order: 900
+  - source: "@quartz-community/stacked-pages"
+    enabled: false
+    layout:
+      position: afterBody
+      priority: 50
+      display: all
 layout:
   groups:
     toolbar:
