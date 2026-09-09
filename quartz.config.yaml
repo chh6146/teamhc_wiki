@@ -196,14 +196,22 @@ plugins:
       position: beforeBody
       priority: 5
       condition: not-index
-  - source: "@quartz-community/comments"
-    enabled: false
+  - source: github:quartz-community/comments
+    enabled: true
     options:
       provider: giscus
-      options: {}
-    layout:
-      position: afterBody
-      priority: 10
+      options:
+        repo: "chh6146/teamhc_wiki"
+        repoId: "R_kgDOUTSpHA"
+        category: "Announcements"
+        categoryId: "DIC_kwDOUTSpHM4DFNoS"
+        mapping: "pathname"
+        strict: "1"
+        reactionsEnabled: "1"
+        emitMetadata: "0"
+        inputPosition: "top"
+        lang: "ko"
+        loading: "lazy"
   - source: "@quartz-community/footer"
     enabled: false
     options:
