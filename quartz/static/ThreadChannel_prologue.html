@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>쓰레채널 - 게시글</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --point-color: #E6FF00; /* 네온 옐로우 */
+            --text-main: #ffffff;
+            --text-sub: #888888;
+            --border-color: #333333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background-color: var(--bg-color); 
+            font-family: 'Pretendard', -apple-system, sans-serif; 
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* 상단 헤더: 타이머 강조 */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .back-btn { font-size: 20px; cursor: pointer; }
+        
+        .timer-badge {
+            background: #2a2a2a;
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--point-color);
+            color: var(--point-color);
+            font-weight: bold;
+            font-variant-numeric: tabular-nums;
+            font-size: 0.9rem;
+        }
+
+        /* 본문 영역 */
+        .container { padding: 20px; }
+
+        .post-header { margin-bottom: 20px; }
+        .post-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; color: var(--point-color);}
+        .post-info { color: var(--text-sub); font-size: 0.85rem; display: flex; gap: 10px; }
+
+        .post-content {
+            font-size: 1.05rem;
+            min-height: 200px;
+            margin-bottom: 40px;
+            white-space: pre-wrap;
+        }
+
+        /* 추천/비우기 버튼 섹션 */
+        .interaction-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            padding: 30px 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .upvote-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: none;
+            background: var(--card-bg);
+            border: 2px solid var(--point-color);
+            color: var(--point-color);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .upvote-btn:active { transform: scale(0.9); background: var(--point-color); color: #000; }
+        .upvote-btn span { font-size: 24px; }
+        .upvote-count { font-weight: bold; margin-top: 4px; }
+
+        /* 댓글 영역 (간소화) */
+        .comment-section { margin-top: 20px; padding-bottom: 100px; }
+        .comment-header { font-weight: bold; margin-bottom: 15px; font-size: 0.9rem; color: var(--text-sub); }
+        .comment-item { padding: 15px 0; border-bottom: 1px solid var(--border-color); }
+        .comment-user { font-size: 0.85rem; font-weight: bold; margin-bottom: 4px; color: var(--point-color); }
+        .comment-text { font-size: 0.95rem; }
+
+        /* 하단 댓글 입력창 */
+        .bottom-input {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding: 15px 20px;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-box {
+            flex: 1;
+            background: #2a2a2a;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            color: white;
+            outline: none;
+        }
+
+        .send-btn { color: var(--point-color); font-weight: bold; border: none; background: none; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="back-btn">←</div>
+        <div class="timer-badge">⏳ 23:13:24 남음</div>
+        <div style="font-size: 20px;">⋮</div>
+    </header>
+
+    <div class="container">
+        <!-- 게시글 상단 -->
+        <div class="post-header">
+            <h1 class="post-title">세상이 바뀌었는데 나만 아는 거 같음</h1>
+            <div class="post-info">
+                <span>익명</span>
+                <span>•</span>
+                <span>2시간 전</span>
+                <span>•</span>
+                <span>조회수 132</span>
+            </div>
+        </div>
+
+        <!-- 본문 -->
+        <div class="post-content">
+말이 됨?
+내가 알던 지구와 다른 지구에 떨어진 기분임.
+친했던 친구도 갑자기 사라지고 학교도 좀 이상해짐.
+        </div>
+
+        <!-- 반응 버튼 -->
+        <div class="interaction-bar">
+            <button class="upvote-btn">
+                <span>🗑️</span>
+                <div class="upvote-count">128</div>
+            </button>
+            <p style="font-size: 0.8rem; color: var(--text-sub);">이 글을 쓰레기통으로 보내 인기글로 만들기</p>
+        </div>
+
+        <!-- 댓글 목록 -->
+        <div class="comment-section">
+            <div class="comment-header">댓글 7개</div>
+            
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">지구가 바뀐 게 아니라 니가 미쳐가고 있는 거.</div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">나 저번에 자다 깨니까 엄마 성씨 바뀌어있길래 소름 돋았는데 걍 내가 잘못 안거였음.</div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">너무 무섭다 ㅠㅠㅠ</div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">나였으면 무서워서 그 자리에서 울었을 듯... 계속 경과 댓글로 공유해줘.</div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">혹시 가스 누출로 인한 환각일 수 있으니 환기부터 시키시길 바랍니다.</div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">도파민 터지네 다음 편 언제 가져옴? 말머리 소설 붙여라.</div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">어그로 주지 마라</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 댓글 입력바 -->
+    <div class="bottom-input">
+        <input type="text" class="input-box" placeholder="비우고 싶은 생각을 적어주세요...">
+        <button class="send-btn">등록</button>
+    </div>
+
+</body>
+</html>

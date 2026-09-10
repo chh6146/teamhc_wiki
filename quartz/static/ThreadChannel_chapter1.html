@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>쓰레채널 - 게시글</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --point-color: #E6FF00; /* 네온 옐로우 */
+            --text-main: #ffffff;
+            --text-sub: #888888;
+            --border-color: #333333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background-color: var(--bg-color); 
+            font-family: 'Pretendard', -apple-system, sans-serif; 
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* 상단 헤더: 타이머 강조 */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .back-btn { font-size: 20px; cursor: pointer; }
+        
+        .timer-badge {
+            background: #2a2a2a;
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--point-color);
+            color: var(--point-color);
+            font-weight: bold;
+            font-variant-numeric: tabular-nums;
+            font-size: 0.9rem;
+        }
+
+        /* 본문 영역 */
+        .container { padding: 20px; }
+
+        .post-header { margin-bottom: 20px; }
+        .post-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; color: var(--point-color);}
+        .post-info { color: var(--text-sub); font-size: 0.85rem; display: flex; gap: 10px; }
+
+        .post-content {
+            font-size: 1.05rem;
+            min-height: 200px;
+            margin-bottom: 40px;
+            white-space: pre-wrap;
+        }
+
+        /* 추천/비우기 버튼 섹션 */
+        .interaction-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            padding: 30px 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .upvote-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: none;
+            background: var(--card-bg);
+            border: 2px solid var(--point-color);
+            color: var(--point-color);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .upvote-btn:active { transform: scale(0.9); background: var(--point-color); color: #000; }
+        .upvote-btn span { font-size: 24px; }
+        .upvote-count { font-weight: bold; margin-top: 4px; }
+
+        /* 댓글 영역 (간소화) */
+        .comment-section { margin-top: 20px; padding-bottom: 100px; }
+        .comment-header { font-weight: bold; margin-bottom: 15px; font-size: 0.9rem; color: var(--text-sub); }
+        .comment-item { padding: 15px 0; border-bottom: 1px solid var(--border-color); }
+        .comment-user { font-size: 0.85rem; font-weight: bold; margin-bottom: 4px; color: var(--point-color); }
+        .comment-text { font-size: 0.95rem; }
+
+        /* 하단 댓글 입력창 */
+        .bottom-input {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding: 15px 20px;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-box {
+            flex: 1;
+            background: #2a2a2a;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            color: white;
+            outline: none;
+        }
+
+        .send-btn { color: var(--point-color); font-weight: bold; border: none; background: none; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="back-btn">←</div>
+        <div class="timer-badge">⏳ 68:13:24 남음</div>
+        <div style="font-size: 20px;">⋮</div>
+    </header>
+
+    <div class="container">
+        <!-- 게시글 상단 -->
+        <div class="post-header">
+            <h1 class="post-title">공개 전파 데이터 분석하다가 개이상한 거 발견</h1>
+            <div class="post-info">
+                <span>익명</span>
+                <span>•</span>
+                <span>5시간 전</span>
+                <span>•</span>
+                <span>조회수 575</span>
+            </div>
+        </div>
+
+        <!-- 본문 -->
+        <div class="post-content">
+라디오 천문대 오픈데이터 뜯어보다가 오늘 수신 데이터중에 소름 돋는거 발견함.
+누가 봐도 인공적인 협대역 신호라서 외계인 찾은 것 같음.
+그런데 궤도 계산하면 신호 발신점이 지구를 가리킴.
+무슨 소리인지암? 지구 내핵에 외계인이 있다는 소리임.
+히틀러 달에 살고 있다던데 내핵에 기지 짓고 살고 있을지도 모름 ㅋㅋㅋㅋ
+아, 글 쓰는데 미친듯이 졸리고 눈이 자꾸 감긴다. 뇌파 공격하는 거임.
+        </div>
+
+        <!-- 반응 버튼 -->
+        <div class="interaction-bar">
+            <button class="upvote-btn">
+                <span>🗑️</span>
+                <div class="upvote-count">128</div>
+            </button>
+            <p style="font-size: 0.8rem; color: var(--text-sub);">이 글을 쓰레기통으로 보내 인기글로 만들기</p>
+        </div>
+
+        <!-- 댓글 목록 -->
+        <div class="comment-section">
+            <div class="comment-header">댓글 12개</div>
+            
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">협대역 신호가 뭔데?</div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">잡음은 넓게 퍼지는데 좁은 공간에 쏘는 게 협대역 신호임.</div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">내핵 신호는 모르겠고 글쓴이 건강이 제일 걱정됨...</div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">애초에 KVN에서 오픈데이터 제공하기는 함?</div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">내핵 히틀러 vs 달 히틀러 세계관 최강자 대결 개막 ㅋㅋㅋ</div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">협대역 신호라면 근처 전자기기에서 발생한 스퓨리어스 잡음일 가능성이 매우 높습니다.</div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">공개 전파 데이터에 스퓨리어스는 뭔 개소리야.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 댓글 입력바 -->
+    <div class="bottom-input">
+        <input type="text" class="input-box" placeholder="비우고 싶은 생각을 적어주세요...">
+        <button class="send-btn">등록</button>
+    </div>
+
+</body>
+</html>

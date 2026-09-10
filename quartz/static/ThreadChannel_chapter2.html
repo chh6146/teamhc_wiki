@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>쓰레채널 - 게시글</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --point-color: #E6FF00; /* 네온 옐로우 */
+            --text-main: #ffffff;
+            --text-sub: #888888;
+            --border-color: #333333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background-color: var(--bg-color); 
+            font-family: 'Pretendard', -apple-system, sans-serif; 
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* 상단 헤더: 타이머 강조 */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .back-btn { font-size: 20px; cursor: pointer; }
+        
+        .timer-badge {
+            background: #2a2a2a;
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--point-color);
+            color: var(--point-color);
+            font-weight: bold;
+            font-variant-numeric: tabular-nums;
+            font-size: 0.9rem;
+        }
+
+        /* 본문 영역 */
+        .container { padding: 20px; }
+
+        .post-header { margin-bottom: 20px; }
+        .post-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; color: var(--point-color);}
+        .post-info { color: var(--text-sub); font-size: 0.85rem; display: flex; gap: 10px; }
+
+        .post-content {
+            font-size: 1.05rem;
+            min-height: 200px;
+            margin-bottom: 40px;
+            white-space: pre-wrap;
+        }
+
+        /* 추천/비우기 버튼 섹션 */
+        .interaction-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            padding: 30px 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .upvote-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: none;
+            background: var(--card-bg);
+            border: 2px solid var(--point-color);
+            color: var(--point-color);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .upvote-btn:active { transform: scale(0.9); background: var(--point-color); color: #000; }
+        .upvote-btn span { font-size: 24px; }
+        .upvote-count { font-weight: bold; margin-top: 4px; }
+
+        /* 댓글 영역 (간소화) */
+        .comment-section { margin-top: 20px; padding-bottom: 100px; }
+        .comment-header { font-weight: bold; margin-bottom: 15px; font-size: 0.9rem; color: var(--text-sub); }
+        .comment-item { padding: 15px 0; border-bottom: 1px solid var(--border-color); }
+        .comment-user { font-size: 0.85rem; font-weight: bold; margin-bottom: 4px; color: var(--point-color); }
+        .comment-text { font-size: 0.95rem; }
+
+        /* 하단 댓글 입력창 */
+        .bottom-input {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding: 15px 20px;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-box {
+            flex: 1;
+            background: #2a2a2a;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            color: white;
+            outline: none;
+        }
+
+        .send-btn { color: var(--point-color); font-weight: bold; border: none; background: none; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="back-btn">←</div>
+        <div class="timer-badge">⏳ 68:13:24 남음</div>
+        <div style="font-size: 20px;">⋮</div>
+    </header>
+
+    <div class="container">
+        <!-- 게시글 상단 -->
+        <div class="post-header">
+            <h1 class="post-title">드디어 좀비 사태 터짐...jpg</h1>
+            <div class="post-info">
+                <span>익명</span>
+                <span>•</span>
+                <span>6시간 전</span>
+                <span>•</span>
+                <span>조회수 1,011</span>
+            </div>
+        </div>
+
+        <!-- 본문 -->
+        <div class="post-content">
+뉴스는 캡쳐못함. 링크로 봐라.
+        </div>
+
+        <!-- 반응 버튼 -->
+        <div class="interaction-bar">
+            <button class="upvote-btn">
+                <span>🗑️</span>
+                <div class="upvote-count">664</div>
+            </button>
+            <p style="font-size: 0.8rem; color: var(--text-sub);">이 글을 쓰레기통으로 보내 인기글로 만들기</p>
+        </div>
+
+        <!-- 댓글 목록 -->
+        <div class="comment-section">
+            <div class="comment-header">댓글 31개</div>
+            
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">사진 보니까 걍 술 먹고 주정부리는 아저씨잖아 ㅋㅋㅋ</div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">영화 촬영 현장 스포컷아님??</div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">혹시 마약 사태 같은 거 아니야? 요새 이상한 사람들 많던데...</div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">eagle 보고 다이소가서 감자씨앗 100개 샀다</div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">한국에서 발생한건데 왜 좀비라고함? 한국식에 맞게 창귀라고해라.</div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">저거 우리집 앞임. 밤새도록 저러고 있더라.</div>
+            </div>
+
+            <div class="comment-item">
+                <div class="comment-user">잡담의무명</div>
+                <div class="comment-text">요즘 시국이 어수선하다보니 이런 낚시글에도 가슴이 철렁하네요.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 댓글 입력바 -->
+    <div class="bottom-input">
+        <input type="text" class="input-box" placeholder="비우고 싶은 생각을 적어주세요...">
+        <button class="send-btn">등록</button>
+    </div>
+
+</body>
+</html>
