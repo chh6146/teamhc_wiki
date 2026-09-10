@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>쓰레채널 - 메인</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --point-color: #E6FF00; /* 네온 옐로우 */
+            --text-main: #ffffff;
+            --text-sub: #888888;
+            --border-color: #333333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background-color: var(--bg-color); 
+            font-family: 'Pretendard', -apple-system, sans-serif; 
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* 1. 최상단 헤더 */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(18, 18, 18, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--point-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 15px;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* 전체 레이아웃 컨테이너 */
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 공통 섹션 타이틀 */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .section-title span.highlight {
+            color: var(--point-color);
+        }
+
+        /* 게시글 카드 컴포넌트 */
+        .post-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: border-color 0.2s, transform 0.1s;
+        }
+
+        .post-card:active {
+            transform: scale(0.99);
+            border-color: var(--point-color);
+        }
+
+        .post-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .badge-timer {
+            font-size: 0.75rem;
+            color: var(--point-color);
+            background: rgba(230, 255, 0, 0.1);
+            border: 1px solid var(--point-color);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .post-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .post-card-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-sub);
+        }
+
+        .meta-stats {
+            display: flex;
+            gap: 12px;
+        }
+
+        .meta-stats span {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        /* 메인 리스트 간격 */
+        .main-section {
+            margin-bottom: 35px;
+        }
+
+        /* 4. Footer 영역 */
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 30px 20px 50px 20px;
+            background-color: #0d0d0d;
+            color: var(--text-sub);
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text-sub);
+            text-decoration: none;
+        }
+
+        .footer-copyright {
+            color: #444;
+        }
+
+        /* 글쓰기 플로팅 버튼 */
+        .fab-button {
+            position: fixed;
+            bottom: 25px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--point-color);
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(230, 255, 0, 0.3);
+            cursor: pointer;
+            border: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 1. 최상단 쓰레채널 헤더 -->
+    <header>
+        <a href="#" class="logo">🗑️ 쓰레채널</a>
+        <div class="header-icons">
+            <span>🔍</span>
+            <span>⚙️</span>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- 2. 인기 쓰레기 글 10개 (인기/상위 쓰레기통) -->
+        <section class="main-section">
+            <div class="section-header">
+                <h2 class="section-title">🔥 <span class="highlight">인기</span> 쓰레기통</h2>
+            </div>
+
+            <!-- 1번 글 (기존 페이지 작성글 연동) -->
+            <div class="post-card">
+                <div class="post-card-top">
+                    <span class="badge-timer">⏳ 36:22:10</span>
+                </div>
+                <div class="post-card-title">속옷에 대한 고찰</div>
+                <div class="post-card-meta">
+                    <span>잡담의무명 • 11시간 전</span>
+                    <div class="meta-stats">
+                        <span>🗑️ 132</span>
+                        <span>💬 21</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-card-top">
+                    <span class="badge-timer">⏳ 12:40:02</span>
+                </div>
+                <div class="post-card-title">월요일에 출근 안 하고 노는법 공유함</div>
+                <div class="post-card-meta">
+                    <span>잡담의무명 • 5시간 전</span>
+                    <div class="meta-stats">
+                        <span>🗑️ 98</span>
+                        <span>💬 45</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-card-top">
+                    <span class="badge-timer">⏳ 08:15:33</span>
+                </div>
+                <div class="post-card-title">간짜장 부먹 찍먹 논란 최종 정리해준다</div>
+                <div class="post-card-meta">
+                    <span>잡담의무명 • 8시간 전</span>
+                    <div class="meta-stats">
+                        <span>🗑️ 87</span>
+                        <span>💬 32</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-card-top">
+                    <span class="badge-timer">⏳ 21:05:12</span>
+                </div>
+                <div class="post-card-title">오늘 길가다 붕어빵 3개 천원에 파는 곳 찾음</div>
+                <div class="post-card-meta">
+                    <span>잡담의무명 • 3시간 전</span>
+                    <div class="meta-stats">
+                        <span>🗑️ 75</span>
+                        <span>💬 12</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-card-top">
+                    <span class="badge-timer">⏳ 41:10:00</span>
+                </div>
+                <div class="post-card-title">솔직히 인류 최고의 발명품 넘버원</div>
+                <div class="post-card-meta">
+                    <span>잡담의무명 • 15시간 전</span>
+                    <div class="meta-stats">
+                        <span>🗑️ 64</span>
+                        <span>💬 18</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-card-top">
+                    <span class="badge-timer">⏳ 02:45:19</span>
+                </div>
+                <div class="post-card-title">강아지 vs 고양이 결론 낸다</div>
+                <div class="post-card-meta">
+                    <span>잡담의무명 • 6시간 전</span>
+                    <div class="meta-stats">
+                        <span>🗑️ 58</span>
+                        <span>💬 27</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-card-top">
+                    <span class="badge-timer">⏳ 19:30:40</span>
+                </div>
+                <div class="post-card-title">아침에 가장 먼저 하는 거 댓글로 좀 써봐</div>
+                <div class="post-card-meta">
+                    <span>잡담의무명 • 10시간 전</span>
+                    <div class="meta-stats">
+                        <span>🗑️ 51</span>
+                        <span>💬 9</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-card-top">
+                    <span class="badge-timer">⏳ 11:20:00</span>
+                </div>
+                <div class="post-card-title">라면 끓일 때 스프 먼저 넣으면 생기는 일</div>
+                <div class="post-card-meta">
+                    <span>잡담의무명 • 4시간 전</span>
+                    <div class="meta-stats">
+                        <span>🗑️ 43</span>
+                        <span>💬 15</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-card-top">
+                    <span class="badge-timer">⏳ 05:12:08</span>
+                </div>
+                <div class="post-card-title">아무도 안 궁금한 오늘 내 점심 메뉴</div>
+                <div class="post-card-meta">
+                    <span>잡담의무명 • 7시간 전</span>
+                    <div class="meta-stats">
+                        <span>🗑️ 39</span>
+                        <span>💬 8</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-card-top">
+                    <span class="badge-timer">⏳ 29:50:11</span>
+                </div>
+                <div class="post-card-title">솔직히 로또 당첨되면 하고 싶은 것 1위</div>
+                <div class="post-card-meta">
+                    <span>잡담의무명 • 12시간 전</span>
+                    <div class="meta-stats">
+                        <span>🗑️ 35</span>
+                        <span>💬 14</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 3. 최근 쓰레기 글 10개 (최신 등록순) -->
+        <section class="main-section">
+            <div class="section-header">
+                <h2 class="section-title">⏱️ <span class="highlight">최근</span> 쓰레기통</h2>
+            </div>
+
+            <div class="post-card">
+                <div class="post-card-top">
+                    <span class="badge-timer">⏳ 47:59:12</span>
+                </div>
+                <div class="post-card-title">방금 지나간 고양이 귀여웠다</div>
+                <div class="post-card-meta">
+                    <span>잡담의무명 • 방금 전</span>
+                    <div class="meta-stats">
+                        <span>🗑️ 1</span>
+                        <span>💬 0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-card-top">
+                    <span class="badge-timer">⏳ 47:55:00</span>
+                </div>
+                <div class="post-card-title">오늘 날씨 왜 이렇게 춥냐</div>
+                <div class="post-card-meta">
+                    <span>잡담의무명 • 4분 전</span>
+                    <div class="meta-stats">
+                        <span>🗑️ 3</span>
+                        <span>💬 1</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-card-top">
+                    <span class="badge-timer">⏳ 47:48:21</span>
+                </div>
+                <div class="post-card-title">심심한데 아무거나 질문 받음</div>
+                <div class="post-card-meta">
+                    <span>잡담의무명 • 11분 전</span>
+                    <div class="meta-stats">
+                        <span>🗑️ 0</span>
+                        <span>💬 3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-card-top">
+                    <span class="badge-timer">⏳ 47:40:10</span>
+                </div>
+                <div class="post-card-title">편의점 신상 과자 솔직 후기</div>
+                <div class="post-card-meta">
+                    <span>잡담의무명 • 19분 전</span>
+                    <div class="meta-stats">
+                        <span>🗑️ 5</span>
+                        <span>💬 2</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-card-top">
+                    <span class="badge-timer">⏳ 47:32:00</span>
+                </div>
+                <div class="post-card-title">내일 출근하기 싫어서 우는 중</div>
+                <div class="post-card-meta">
+                    <span>잡담의무명 • 27분 전</span>
+                    <div class="meta-stats">
+                        <span>🗑️ 12</span>
+                        <span>💬 6</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-card-top">
+                    <span class="badge-timer">⏳ 47:20:45</span>
+                </div>
+                <div class="post-card-title">지금 듣고 있는 노래 추천한다</div>
+                <div class="post-card-meta">
+                    <span>잡담의무명 • 39분 전</span>
+                    <div class="meta-stats">
+                        <span>🗑️ 4</span>
+                        <span>💬 1</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-card-top">
+                    <span class="badge-timer">⏳ 47:15:00</span>
+                </div>
+                <div class="post-card-title">배달앱 쿠폰 쓸까 말까 고민중</div>
+                <div class="post-card-meta">
+                    <span>잡담의무명 • 45분 전</span>
+                    <div class="meta-stats">
+                        <span>🗑️ 2</span>
+                        <span>💬 4</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-card-top">
+                    <span class="badge-timer">⏳ 47:01:30</span>
+                </div>
+                <div class="post-card-title">자기 전에 스마트폰 안 보는 팁 좀</div>
+                <div class="post-card-meta">
+                    <span>잡담의무명 • 58분 전</span>
+                    <div class="meta-stats">
+                        <span>🗑️ 7</span>
+                        <span>💬 5</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-card-top">
+                    <span class="badge-timer">⏳ 46:50:00</span>
+                </div>
+                <div class="post-card-title">노트북 살 건데 맥북 vs 갤북</div>
+                <div class="post-card-meta">
+                    <span>잡담의무명 • 1시간 전</span>
+                    <div class="meta-stats">
+                        <span>🗑️ 6</span>
+                        <span>💬 8</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="post-card">
+                <div class="post-card-top">
+                    <span class="badge-timer">⏳ 46:42:15</span>
+                </div>
+                <div class="post-card-title">오늘 운동 완료</div>
+                <div class="post-card-meta">
+                    <span>잡담의무명 • 1시간 전</span>
+                    <div class="meta-stats">
+                        <span>🗑️ 9</span>
+                        <span>💬 2</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- 플로팅 쓰기 버튼 (FAB) -->
+    <button class="fab-button">✏️</button>
+
+    <!-- 4. Footer 영역 -->
+    <footer>
+        <div class="footer-logo">THREAD-CHANNEL</div>
+        <div class="footer-links">
+            <a href="#">이용약관</a>
+            <a href="#">개인정보처리방침</a>
+            <a href="#">문의하기</a>
+        </div>
+        <p class="footer-copyright">© Thread-Channel All rights reserved. 비우고 싶은 생각을 버리는 공간.</p>
+    </footer>
+
+</body>
+</html>
