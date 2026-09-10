@@ -212,6 +212,9 @@ plugins:
         inputPosition: "top"
         lang: "ko"
         loading: "lazy"
+    layout:
+      position: afterBody
+      condition: not-index
   - source: "@quartz-community/footer"
     enabled: false
     options:
